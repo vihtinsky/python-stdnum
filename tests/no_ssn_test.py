@@ -1,7 +1,7 @@
 # flake8: noqa
 import unittest
 
-from stdnum.no import ssn
+from stdnum.no import personalid as ssn
 from stdnum.exceptions import ValidationError
 
 
@@ -65,14 +65,11 @@ class TestNorwaySSN(unittest.TestCase):
     def test_valid_gender(self):
         # 1 - Male, 0 - Female
         for number, gender in VALID_SSN:
-            self.assertTrue(ssn.is_valid(number, gender))
-            self.assertFalse(ssn.is_valid(number, 0 if gender else 1))
+            self.assertTrue(ssn.get_gender(number) == 'M' if gender else 'F')
 
     def test_invalid_checksum(self):
-        def check_number(number, gender):
+        def check_number(number):
             self.assertFalse(ssn.is_valid(number))
-            self.assertFalse(ssn.is_valid(number, 0 if gender else 1))
-            self.assertFalse(ssn.is_valid(number, gender))
 
         for num, gender in VALID_SSN:
             checksum = int(num[-2:])
@@ -81,4 +78,4 @@ class TestNorwaySSN(unittest.TestCase):
                 if n == checksum:
                     continue
                 number = num[:-2] + '%02d' % n
-                check_number(number, gender)
+                check_number(number)

@@ -5,7 +5,7 @@ Test for Swedish Personal identity number
 
 import unittest
 
-from stdnum.se import ssn
+from stdnum.se import personalid as ssn
 from stdnum.exceptions import ValidationError
 
 
